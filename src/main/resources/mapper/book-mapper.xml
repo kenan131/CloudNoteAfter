@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bin.model.mapper.BookMapper">
+
+
+    <select id="selectBooks" resultType="Book">
+        select *
+        from book
+        where noteId = #{noteId} and del = -1
+    </select>
+
+    <select id="selectBookByName" resultType="Book">
+        select *
+        from book
+        where noteId = #{noteId} and del = -1 and name like '%${name}%'
+    </select>
+
+    <insert id="insertBook" parameterType="Book" keyProperty="id">
+        insert into book(name,text,del,share,createTime,updateTime,noteId)
+        values(#{name}, #{text},#{del},#{share},#{createTime},#{updateTime},#{noteId})
+    </insert>
+
+    <update id="updateBookName">
+        update book set name = #{name} where id = #{bookId}
+    </update>
+
+    <update id="deleteBook">
+        update book set del=#{userId} where id = #{bookId}
+    </update>
+
+    <update id="shareBook">
+        update book set share=#{share} where id = #{bookId}
+    </update>
+
+    <update id="shiftNoteBook">
+        update book set noteId=#{noteId} where id = #{bookId}
+    </update>
+
+    <select id="selectBookById" resultType="Book">
+        select *
+        from book
+        where id = #{bookId}
+    </select>
+
+    <select id="selectBookListByDel" resultType="Book">
+        select *
+        from book
+        where del = #{userId}
+    </select>
+
+    <select id="selectBookListByDelAndName" resultType="Book">
+        select *
+        from book
+        where del = #{userId} and name = #{bookName}
+    </select>
+
+    <select id="selectBookListByShare" resultType="Book">
+        select *
+        from book
+        where share = #{share}
+    </select>
+
+    <update id="saveBook">
+        update book set text=#{text} where id = #{bookId}
+    </update>
+
+    <select id="getBookText" resultType="String">
+        select text
+        from book
+        where id=#{bookId}
+    </select>
+
+    <delete id="realDelBook">
+        delete
+        from book
+        where id = #{bookId}
+    </delete>
+</mapper>

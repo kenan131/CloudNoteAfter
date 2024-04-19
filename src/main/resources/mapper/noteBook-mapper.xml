@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bin.model.mapper.NoteBookMapper">
+
+
+    <select id="selectNotes" resultType="NoteBook">
+        select *
+        from notebook
+        where userId = #{userId}
+    </select>
+
+    <select id="selectNoteName" resultType="NoteBook">
+        select *
+        from notebook
+        where userId = #{userId} and name like '%${name}%'
+    </select>
+
+    <insert id="insertNoteBook" parameterType="NoteBook" keyProperty="id">
+        insert into notebook(name,userId)
+        values(#{name}, #{userId})
+    </insert>
+
+    <update id="updateNoteName">
+        update notebook set name = #{name} where id = #{noteId}
+    </update>
+
+    <update id="deleteNoteBook">
+        delete from notebook where id = #{noteId}
+    </update>
+
+    <select id="selectNoteBookById" resultType="NoteBook">
+        select *
+        from notebook
+        where id = #{noteBookId}
+    </select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bin.model.mapper.ScheduleMapper">
+
+    <select id="selectById" resultType="Schedule">
+        select *
+        from schedule
+        where id=#{id}
+    </select>
+
+    <select id="selectToDayUnFinish" resultType="Schedule">
+        select *
+        from schedule
+        where status=#{status}
+        and (
+        to_days(finishTime) = to_days(now())
+        or (to_days(finishTime) = to_days(now())-1
+        and date_format(finishTime,'%H:%i:%S')>='00:00:00'
+        and date_format(finishTime,'%H:%i:%S')&lt;'08:00:00')
+        )
+        order by finishTime
+    </select>
+
+    <select id="selectScheduleByStatus" resultType="Schedule">
+        select *
+        from schedule
+        where userId = #{userId} and status=#{status}
+    </select>
+
+    <insert id="insertSchedule" parameterType="Schedule" keyProperty="id">
+        insert into schedule(plan,createTime,finishTime,status,userId)
+        values(#{plan},#{createTime},#{finishTime},#{status},#{userId})
+    </insert>
+
+    <update id="updateScheduleStatus">
+        update schedule set status=#{status} where id=#{id}
+    </update>
+
+    <delete id="deleteSchedule">
+        delete from schedule where id=#{id}
+    </delete>
+
+</mapper>
